@@ -1,0 +1,172 @@
+QUESTION 1
+
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement) && map.get(complement) != i) {
+                return new int[] { i, map.get(complement) };
+            }
+        }
+        // In case there is no solution, we'll just return null
+        return null;
+    }
+}
+
+
+
+
+QUESTION 2
+
+
+class Solution {
+ public int removeElement(int[] nums, int val) {
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                i++;
+            }		
+	}
+        return i;
+          }		
+	}
+
+
+
+
+QUESTION 3
+
+
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length-1;
+ while (start <= end) {
+            int mid = start + (end-start)/2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) end = mid-1;
+            else start = mid+1;
+        }
+return start;
+    }		
+}
+
+
+
+
+
+QUESTION 4
+
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+for(int i=digits.length-1; i >= 0; i--){
+ if(digits[i]<9){
+                digits[i]=digits[i]+1;
+                return digits;
+ }else if(digits[i]==9){
+                digits[i]=0;
+            }   
+        }
+  int[] arr=new int[digits.length+1];
+        arr[0]=1;
+        return arr;
+    }
+
+
+
+
+
+
+QUESTION 5
+
+class Solution {
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+ int i = m - 1;
+int j = n - 1;
+  int k = m + n - 1;
+   while (j >= 0) {
+            if (i >= 0 && nums1[i] > nums2[j]) {
+                nums1[k--] = nums1[i--];
+            } else {
+                nums1[k--] = nums2[j--];
+            }
+        }
+    }
+}
+
+
+
+
+
+
+QUESTION 6
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                return true;
+            }
+            map.put(nums[i],1);
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+QUESTION 7
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int n = 0;
+for(int i=0;i<nums.length;i++){
+if(nums[i] !=  0){
+      nums[n] = nums[i];
+                n++;
+            }	
+}
+        while(n < nums.length){
+                nums[n++] = 0;
+            }
+    }
+}
+
+
+
+
+
+QUESTION 8
+
+public class Solution {
+    public int[] findErrorNums(int[] nums) {
+        Map < Integer, Integer > map = new HashMap();
+        int dup = -1, missing = 1;
+        for (int n: nums) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        }
+        for (int i = 1; i <= nums.length; i++) {
+            if (map.containsKey(i)) {
+                if (map.get(i) == 2)
+                    dup = i;
+            } else
+                missing = i;
+        }
+        return new int[]{dup, missing};
+    }		
+}
+
+

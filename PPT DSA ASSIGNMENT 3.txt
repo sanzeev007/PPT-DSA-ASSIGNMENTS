@@ -1,0 +1,261 @@
+QUESTION 1
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int closestSum = Integer.MAX_VALUE;
+        int curSum = 0;
+        
+        for (int i = 0; i <nums.length - 2; i++) {
+            int left = i + 1;
+            int right=nums.length - 1;
+
+            while (left<right) {
+                curSum = nums[i] + nums[left] + nums[right];
+                if (curSum==target) {
+                    return curSum;
+                } 
+                else if (Math.abs(target - curSum) < Math.abs(target - closestSum)) {
+                    closestSum=curSum;
+                }
+                if (curSum <= target) {
+                    left += 1;
+                    while (nums[left] == nums[left - 1] && left < right) {
+                        left += 1;
+                    }
+                } else {
+                    right -= 1;
+                }
+            }
+        }
+        return closestSum;
+    }
+}
+
+
+
+
+
+
+QUESTION 2
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        Set<List<Integer>> set = new HashSet<>();
+        for(int i = 0; i < nums.length - 3; i++) {
+            for(int j = i + 1; j < nums.length - 2; j++) {
+                int k = j + 1;
+                int l = nums.length - 1;
+                while(k < l) {
+                    long sum = (long)nums[i] + (long)nums[j] + (long)nums[k] + (long)nums[l];
+                    if(sum == target){
+                        set.add(List.of(nums[i],nums[j],nums[k],nums[l]));
+                        k++;
+                        l--;
+                    }
+                    else if(sum < target)
+                        k++;
+                    else
+                        l--;
+                }
+            }
+        }
+        return new ArrayList<>(set);
+    }
+}
+
+
+
+
+
+
+QUESTION 3
+
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int ind1=-1;
+        int ind2=-1;
+        for(int i=nums.length-2;i>=0;i--){
+            if(nums[i]<nums[i+1]){
+                ind1=i;
+                break;
+            }
+        }
+        if(ind1==-1){
+            reverse(nums,0);
+        }
+        else{
+            for(int i=nums.length-1;i>=0;i--){
+                if(nums[i]>nums[ind1]){
+                    ind2=i;
+                    break;
+                }
+            }
+            swap(nums,ind1,ind2);
+            reverse(nums,ind1+1);
+        }
+    }
+    void swap(int[] nums,int i,int j){
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+    void reverse(int[] nums,int start){
+        int i=start;
+        int j=nums.length-1;
+        while(i<j){
+            swap(nums,i,j);
+            i++;
+            j--;
+        }
+    }
+}
+
+
+
+
+
+
+
+QUESTION 4
+
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length-1;
+
+        while (start <= end) {
+            int mid = start + (end-start)/2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) end = mid-1;
+            else start = mid+1;
+        }
+
+        return start;
+    }
+}
+
+
+
+
+
+
+QUESTION 5
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int n = digits.length;
+        // Starting from the least significant digit (i.e., the last element of the array)
+        for (int i = n - 1; i >= 0; i--) {
+            // If the current digit is less than 9, we can add 1 to it and return the updated array
+            if (digits[i] < 9) {
+                digits[i]++; // Add 1 to the current digit
+                return digits; // Return the updated array
+            }
+            // If the current digit is 9, we set it to 0 and continue with the next digit
+            else {
+                digits[i] = 0; // Set the current digit to 0
+            }
+        }
+        // If we reach here, it means all digits were 9, so we need to create a new array with one more element
+        int[] result = new int[n + 1]; // Create a new array with length n + 1
+        result[0] = 1; // Set the first element to 1, since all other elements are 0 by default
+        return result; // Return the new array
+    }
+}
+
+
+
+
+
+
+QUESTION 6
+
+class Solution
+{
+  
+    static int singleNumber(int[] nums, int n)
+    {
+        HashMap<Integer, Integer> m = new HashMap<>();
+        long sum1 = 0, sum2 = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (!m.containsKey(nums[i]))
+            {
+                sum1 += nums[i];
+                m.put(nums[i], 1);
+            }
+            sum2 += nums[i];
+        }
+  
+        // applying the formula.
+        return (int)(2 * (sum1) - sum2); 
+    }
+
+
+
+
+
+
+
+QUESTION 7
+
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        int n = nums.length;
+        List<String> ans = new ArrayList<>();
+        if (n == 0) {
+            ans.add(f(lower, upper));
+            return ans;
+        }
+        if (nums[0] > lower) {
+            ans.add(f(lower, nums[0] - 1));
+        }
+        for (int i = 1; i < n; ++i) {
+            int a = nums[i - 1], b = nums[i];
+            if (b - a > 1) {
+                ans.add(f(a + 1, b - 1));
+            }
+        }
+        if (nums[n - 1] < upper) {
+            ans.add(f(nums[n - 1] + 1, upper));
+        }
+        return ans;
+    }
+
+    private String f(int a, int b) {
+        return a == b ? a + "" : a + "->" + b;
+    }
+}
+
+
+
+
+
+QUESTION 8
+
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+        int ans = 0;
+        int k = Integer.MIN_VALUE;
+        
+        for (int i = 0; i < intervals.length; i++) {
+            int x = intervals[i][0];
+            int y = intervals[i][1];
+            
+            if (x >= k) {
+                // Case 1
+
+                k = y;
+            } else {
+                // Case 2
+
+                ans++;
+            }
+        }
+        
+        return ans;
+    }
+}

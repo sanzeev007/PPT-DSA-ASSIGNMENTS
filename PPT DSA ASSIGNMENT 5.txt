@@ -1,0 +1,230 @@
+QUESTION 1
+
+class Solution {
+    public int[][] construct2DArray(int[] original, int m, int n) {
+        if (original.length != m * n) {
+            return new int[0][0];
+        }
+        int[][] ans = new int[m][n];
+        for (int r = 0; r < m; ++r) {
+            for (int c = 0; c < n; ++c) {
+                ans[r][c] = original[r * n + c];
+            }
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+QUESTION 2
+
+class Solution {
+  public int arrangeCoins(int n) {
+    long left = 0, right = n;
+    long k, curr;
+    while (left <= right) {
+      k = left + (right - left) / 2;
+      curr = k * (k + 1) / 2;
+
+      if (curr == n) return (int)k;
+
+      if (n < curr) {
+        right = k - 1;
+      } else {
+        left = k + 1;
+      }
+    }
+    return (int)right;
+  }
+}
+
+
+
+
+
+
+QUESTION 3
+
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int left=0, right=nums.length-1;
+        int ans[]= new int[nums.length];
+        int k=nums.length-1;
+        while(left<=right){
+            int max=(Math.abs(nums[left])<Math.abs(nums[right])? nums[right]: nums[left]);
+            if(max==nums[right])
+                right--;
+                else 
+                    left++;
+            ans[k]=max*max;
+            k--;
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+QUESTION 4
+
+class Solution {
+    
+    List<Integer> getElementsOnlyInFirstList(int[] nums1, int[] nums2) {
+        Set<Integer> onlyInNums1 = new HashSet<> (); 
+        Set<Integer> existsInNums2 = new HashSet<> (); 
+        for (int num : nums2) {
+            existsInNums2.add(num);
+        }
+        
+       for (int num : nums1) {
+            if (!existsInNums2.contains(num)) {
+                onlyInNums1.add(num);
+            }
+        }
+        
+      return new ArrayList<>(onlyInNums1);
+    }
+    
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        return Arrays.asList(getElementsOnlyInFirstList(nums1, nums2), getElementsOnlyInFirstList(nums2, nums1));
+    }
+}
+
+
+
+
+
+
+
+QUESTION 5
+
+class Solution {
+
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        Arrays.sort(arr2);    
+        int distance = 0;
+        
+        for (int val : arr1) {
+            if (notInRange(arr2, val - d, val + d)) {
+                distance++;
+            }
+        }    
+        
+        return distance;
+    }
+    
+    // Checks if the array doesn't contain any value in range (from <= value <= to) using binary search
+    
+private static boolean notInRange(int[] arr, int from, int to) {
+        int start = 0;
+        int end = arr.length - 1;
+        
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] >= from && arr[mid] <= to) {
+                return false;
+            } else if (arr[mid] < from) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        
+        return true;
+    }
+}
+
+
+
+
+
+
+QUESTION 6
+
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        int visited = -1;
+        for(int i = 0;i<nums.length;i++){
+            if(nums[Math.abs(nums[i])-1]<0){
+                list.add(Math.abs(nums[i]));
+            }
+            else{
+                nums[Math.abs(nums[i])-1] = nums[Math.abs(nums[i])-1]*visited;
+            }
+        }
+        return list;
+    }
+}
+
+
+
+
+
+
+
+QUESTION 7
+
+class Solution {
+  public int findMin(int[] nums) {
+    int l = 0;
+    int r = nums.length - 1;
+
+    while (l < r) {
+      final int m = (l + r) / 2;
+      if (nums[m] < nums[r])
+        r = m;
+      else
+        l = m + 1;
+    }
+
+    return nums[l];
+  }
+}
+
+
+
+
+
+
+
+
+
+QUESTION 8
+
+class Solution {
+    
+    public int[] findOriginalArray(int[] changed) {
+        int n = changed.length, j = 0;
+       
+        if (n % 2 == 1) return new int[]{};
+        int[] ans = new int[n / 2];
+       
+        int[] cnt = new int[200005];
+      
+        for (int x : changed) cnt[x] += 1;
+        
+        for (int i = 0; i < 200005; i++) {
+           
+            if (cnt[i] > 0) {
+                cnt[i] -= 1;
+               if (cnt[i * 2] > 0) {
+                    cnt[i * 2] -= 1;
+                    
+                    ans[j++] = i--;
+                } else {
+                    // cannot pair up, return []
+                    return new int[]{};
+                }
+            }
+        }
+        return ans;
+    }
+}

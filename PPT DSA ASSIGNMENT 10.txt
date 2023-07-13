@@ -1,0 +1,217 @@
+QUESTION 1
+
+class PowerOfThree{
+static boolean isPower_of_Three(long n)
+{
+    if (n <= 0)
+        return false;
+    if (n % 3 == 0)
+        return isPower_of_Three(n / 3);
+    if (n == 1)
+        return true;
+    return false;
+}
+
+
+
+
+
+
+QUESTION 2
+
+class Solution {
+    public int lastRemaining(int n) {
+        if(n == 1) return 1;
+        return 2*(1 + n/2 - lastRemaining(n/2));
+    }
+}
+
+method 2
+
+public class Solution {
+    public int lastRemaining(int n) {
+        int start = 1, step = 1, remain = n;
+        boolean right = true;
+        while (remain > 1) {
+            if (right || remain % 2 == 1) start += step;
+            remain /= 2;
+            step *= 2;
+            right = !right; 
+        }
+        return start;
+    }
+}
+
+
+
+
+
+
+QUESTION 3
+
+class Solution {
+ 
+   
+ static void powerSet(String str, int index, String curr)
+    {
+        int n = str.length();
+ 
+      if (index == n) {
+            return;
+        }
+ 
+        System.out.println(curr);
+ 
+        for (int i = index + 1; i < n; i++) {
+            curr += str.charAt(i);
+            powerSet(str, i, curr);
+ 
+            curr = curr.substring(0, curr.length() - 1);
+        }
+    }
+
+
+
+
+
+
+
+
+QUESTION 4
+
+public class Solution{
+ 
+   private static int recLen(String str)
+    {
+
+        if (str.equals(""))
+            return 0;
+        else
+            return recLen(str.substring(1)) + 1;
+    }
+
+
+
+
+
+
+
+
+QUESTION 5
+
+
+class Solution
+{
+   
+    static int countSubstrs(String str, int i,int j, int n)
+    {
+       
+        if (n == 1)
+            return 1;
+        if (n <= 0)
+            return 0;
+     
+        int res = countSubstrs(str, i + 1, j, n - 1) +
+                countSubstrs(str, i, j - 1, n - 1) -
+                countSubstrs(str, i + 1, j - 1, n - 2);        
+     
+        if (str.charAt(i) == str.charAt(j))
+            res++;
+     
+        return res;
+    }
+     
+
+
+
+
+
+
+
+
+QUESTION 6
+
+class TowerHanoi
+{
+   
+    static void towerOfHanoi(int n, char from_rod, char to_rod, char aux_rod)
+    {
+        if (n == 1)
+        {
+            System.out.println("Move disk 1 from rod " +  from_rod + " to rod " + to_rod);
+            return;
+        }
+        towerOfHanoi(n-1, from_rod, aux_rod, to_rod);
+        System.out.println("Move disk " + n + " from rod " +  from_rod + " to rod " + to_rod);
+        towerOfHanoi(n-1, aux_rod, to_rod, from_rod);
+    }
+     
+
+
+
+
+
+
+
+QUESTION 7
+
+public class Solution {
+ 
+    static void printPermutn(String str, String ans)
+    {
+ 
+        if (str.length() == 0) {
+            System.out.print(ans + " ");
+            return;
+        }
+ 
+        for (int i = 0; i < str.length(); i++) {
+ 
+            char ch = str.charAt(i);
+ 
+          String ros = str.substring(0, i) +
+                        str.substring(i + 1);
+ 
+            // Recursive call
+            printPermutn(ros, ans + ch);
+        }
+    }
+
+
+
+
+
+
+
+
+QUESTION 8
+
+class Solution
+{
+
+static boolean isConsonant(char ch)
+{
+   
+    ch = Character.toUpperCase(ch);
+  
+    return (ch == 'A' || ch == 'E' || 
+            ch == 'I' || ch == 'O' || 
+            ch == 'U')== false && ch >= 65 && ch <= 90;
+}
+  
+
+static int totalConsonants(String str, int n)
+{
+    if (n == 1)
+    {
+        if(isConsonant(str.charAt(0)))
+            return 1;
+        else
+            return 0;
+    }
+      
+    if(isConsonant(str.charAt(n - 1)))
+        return totalConsonants(str, n - 1) + 1;
+    else
+        return totalConsonants(str, n - 1);
+}

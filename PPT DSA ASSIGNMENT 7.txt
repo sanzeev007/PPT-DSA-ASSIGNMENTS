@@ -1,0 +1,261 @@
+QUESTION 1
+
+class Isomorphic {
+    static int size = 256;
+ 
+       static String areIsomorphic(String str1, String str2)
+    {
+        int m = str1.length();
+        int n = str2.length();
+ 
+        if (m != n)
+            return "False";
+ Boolean[] marked = new Boolean[size];
+        Arrays.fill(marked, Boolean.FALSE);
+ 
+     int[] map = new int[size];
+        Arrays.fill(map, -1);
+ 
+        for (int i = 0; i < n; i++) {
+           
+            if (map[str1.charAt(i)] == -1) {
+              
+                if (marked[str2.charAt(i)] == true)
+                    return "False";
+ 
+              marked[str2.charAt(i)] = true;
+ 
+       map[str1.charAt(i)] = str2.charAt(i);
+            }
+ 
+           else if (map[str1.charAt(i)] != str2.charAt(i))
+                return "False";
+        }
+ 
+        return "True";
+    }
+
+
+
+
+
+
+QUESTION 2
+
+class StrobogrammaticNumber {
+
+  static ArrayList<String> numdef(int n, int length)
+  {
+    ArrayList<String> result = new ArrayList<String>();
+    if (n == 0)
+      return result;
+    if (n == 1) {
+      result.add("1");
+      result.add("0");
+      result.add("8");
+      return result;
+    }
+ 
+    ArrayList<String> middles = numdef(n - 2, length);
+ 
+    for (String middle : middles) {
+      if (n != length)
+        result.add("0" + middle + "0");
+ 
+      result.add("8" + middle + "8");
+      result.add("1" + middle + "1");
+      result.add("9" + middle + "6");
+      result.add("6" + middle + "9");
+    }
+    return result;
+  }
+ 
+  // strobogrammatic function
+  static ArrayList<String> strobogrammatic_num(int n)
+  {
+    ArrayList<String> result = numdef(n, n);
+    return result;
+  }
+
+
+
+
+
+
+
+QUESTION 3
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+
+        int i = num1.length() - 1, j = num2.length() - 1;
+        int carry = 0;
+
+        while (i >= 0 || j >= 0) {
+            int sum = carry;
+
+            if (i >= 0) sum += (num1.charAt(i--) - '0');
+            if (j >= 0) sum += (num2.charAt(j--) - '0');
+
+            sb.append(sum % 10);
+            carry = sum / 10;
+        }
+
+        if (carry != 0) sb.append(carry);
+        return sb.reverse().toString();
+    }
+}
+
+
+
+
+
+
+QUESTION 4
+
+class Solution {
+
+    public String reverseWords(String s) {
+        int lastSpaceIndex = -1;
+        char[] chArray = s.toCharArray();
+        int len = s.length();
+        for (int strIndex = 0; strIndex <= len; strIndex++) {
+            if (strIndex == len || chArray[strIndex] == ' ') {
+                int startIndex = lastSpaceIndex + 1;
+                int endIndex = strIndex - 1;
+                while (startIndex < endIndex) {
+                    char temp = chArray[startIndex];
+                    chArray[startIndex] = chArray[endIndex];
+                    chArray[endIndex] = temp;
+                    startIndex++;
+                    endIndex--;
+                }
+                lastSpaceIndex = strIndex;
+            }
+        }
+        return new String(chArray);
+    }
+
+}
+
+
+
+
+
+
+
+
+QUESTION 5
+
+class Solution {
+
+    string ReverseStr(string s, int k) {
+        for (int i = 0; i < s.size(); i += 2 * k) {
+            int a = i, b = min(i + k, (int)s.size());
+            int left = a, right =  b - 1;
+            while (left < right) {
+                swap(s[left ++], s[right --]);
+            }
+        }
+        return s;
+    }
+}
+
+
+
+
+
+
+
+QUESTION 6
+
+class Solution {
+    public boolean rotateString(String A, String B) {
+        if (A.length() != B.length())
+            return false;
+        if (A.length() == 0)
+            return true;
+
+        search:
+            for (int s = 0; s < A.length(); ++s) {
+                for (int i = 0; i < A.length(); ++i) {
+                    if (A.charAt((s+i) % A.length()) != B.charAt(i))
+                        continue search;
+                }
+                return true;
+            }
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+QUESTION 7
+
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        int i = S.length() - 1, j = T.length() - 1;
+        int skipS = 0, skipT = 0;
+
+        while (i >= 0 || j >= 0) { 
+            while (i >= 0) {
+                if (S.charAt(i) == '#') {skipS++; i--;}
+                else if (skipS > 0) {skipS--; i--;}
+                else break;
+            }
+            while (j >= 0) { 
+                if (T.charAt(j) == '#') {skipT++; j--;}
+                else if (skipT > 0) {skipT--; j--;}
+                else break;
+            }
+          
+            if (i >= 0 && j >= 0 && S.charAt(i) != T.charAt(j))
+                return false;
+         
+            if ((i >= 0) != (j >= 0))
+                return false;
+            i--; 
+           j--;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+QUESTION 8
+
+class Solution {
+   
+    int getYDiff(int[] a, int[] b) {
+        return a[1] - b[1];
+    }
+    
+   int getXDiff(int[] a, int[] b) {
+        return a[0] - b[0];
+    }
+    
+    public boolean checkStraightLine(int[][] coordinates) {
+        int deltaY = getYDiff(coordinates[1], coordinates[0]);
+        int deltaX = getXDiff(coordinates[1], coordinates[0]);
+        
+        for (int i = 2; i < coordinates.length; i++) {
+           
+            if (deltaY * getXDiff(coordinates[i], coordinates[0])
+                != deltaX * getYDiff(coordinates[i], coordinates[0])) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
