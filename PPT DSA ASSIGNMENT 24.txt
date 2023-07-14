@@ -1,0 +1,346 @@
+QUESTION 1
+
+
+ public int romanToInt(String s) {
+         int ans = 0, num = 0;
+        for (int i = s.length()-1; i >= 0; i--) {
+            switch(s.charAt(i)) {
+                case 'I': num = 1; break;
+                case 'V': num = 5; break;
+                case 'X': num = 10; break;
+                case 'L': num = 50; break;
+                case 'C': num = 100; break;
+                case 'D': num = 500; break;
+                case 'M': num = 1000; break;
+            }
+            if (4 * num < ans) ans -= num;
+            else ans += num;
+        }
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 2
+
+
+class Solution {
+	public static int longestUniqueSubsttr(String str)
+	{
+		String test = "";
+		int maxLength = -1;
+
+		
+		if (str.isEmpty()) {
+			return 0;
+		}
+		
+		else if (str.length() == 1) {
+			return 1;
+		}
+		for (char c : str.toCharArray()) {
+			String current = String.valueOf(c);
+
+			if (test.contains(current)) {
+				test = test.substring(test.indexOf(current)+ 1);
+			}
+			test = test + String.valueOf(c);
+			maxLength = Math.max(test.length(), maxLength);
+		}
+
+		return maxLength;
+	}
+
+	public static void main(String[] args)
+	{
+		String str = "geeksforgeeks";
+		System.out.println("The input string is " + str);
+
+		int len = longestUniqueSubsttr(str);
+		System.out.println("The length of the longest "+ "non-repeating character "+ "substring is " + len);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+QUESTION 3
+
+
+
+class Node
+{
+	int key;
+	int c = 0;
+	Node left,right;
+	
+}
+class Solution{
+static int ma = 0;
+
+static Node newNode(int item)
+{
+	Node temp = new Node();
+	temp.key = item;
+	temp.c = 1;
+	temp.left = temp.right = null;
+	return temp;
+}
+
+static Node insert(Node node, int key)
+{
+	
+	if (node == null)
+	{
+		if (ma == 0)
+			ma = 1;
+
+		return newNode(key);
+	}
+	
+	if (key < node.key)
+		node.left = insert(node.left, key);
+	else if (key > node.key)
+		node.right = insert(node.right, key);
+	else
+		node.c++;
+
+	
+	ma = Math.max(ma, node.c);
+	return node;
+}
+
+static void inorder(Node root, int s)
+{
+	if (root != null)
+	{
+		inorder(root.left, s);
+
+		if (root.c > (s / 2))
+			System.out.println(root.key + "\n");
+
+		inorder(root.right, s);
+	}
+}
+
+public static void main(String[] args)
+{
+	int a[] = { 1, 3, 3, 3, 2 };
+	int size = a.length;
+	Node root = null;
+	
+	for(int i = 0; i < size; i++)
+	{
+		root = insert(root, a[i]);
+	}
+	
+	
+	if (ma > (size / 2))
+		inorder(root, size);
+	else
+		System.out.println("No majority element\n");
+}
+}
+
+
+
+
+
+
+
+
+
+QUESTION 4
+
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs.length == 0) {
+            return new ArrayList<>();
+        }
+        
+        Map<String, List<String>> map = new HashMap<>();
+        
+        for (String i : strs) {
+            char[] chars = i.toCharArray();
+            Arrays.sort(chars);
+            String sortedStr = String.valueOf(chars);
+            
+            if (!map.containsKey(sortedStr)) {
+                map.put(sortedStr, new ArrayList<>());
+            }
+            
+            map.get(sortedStr).add(i);
+        }
+        
+        return new ArrayList<>(map.values());
+    }
+}
+
+
+
+
+
+
+
+QUESTION 5
+
+
+
+class Solution {
+    public boolean isUgly(int n) {
+   
+        if (n <= 0) {
+            return false;
+        }
+
+        for (int factor : new int[] { 2, 3, 5 }) {
+            n = keepDividingWhenDivisible(n, factor);
+        }
+
+  
+        return n == 1;
+    }
+
+  
+    private int keepDividingWhenDivisible(int dividend, int divisor) {
+        while (dividend % divisor == 0) {
+            dividend /= divisor;
+        }
+        return dividend;
+    }
+}
+
+
+
+
+
+
+
+
+
+QUESTION 6
+
+
+class Solution {
+  public List<String> topKFrequent(String[] words, int k) {
+        
+       HashMap<String, Integer> map = new HashMap();
+        PriorityQueue<Map.Entry<String, Integer>> heap = new PriorityQueue<>(
+            (a,b)->{
+                if(a.getValue() != b.getValue())
+                    return a.getValue().compareTo(b.getValue());
+                return -a.getKey().compareTo(b.getKey());
+            }
+        );
+        
+      for(String word: words){
+            map.merge(word, 1, Integer::sum);
+        }
+        
+    
+        for(Map.Entry<String, Integer> entry: map.entrySet()){
+            heap.offer(entry);
+            if(heap.size() > k)
+                heap.poll();
+        }
+        
+   
+        List<String> ans = new ArrayList();
+        while(heap.size() > 0)
+            ans.add(heap.poll().getKey());
+        
+
+        Collections.reverse(ans);
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+QUESTION 7
+
+
+public int[] maxSlidingWindow(int[] a, int k) {		
+		if (a == null || k <= 0) {
+			return new int[0];
+		}
+		int n = a.length;
+		int[] r = new int[n-k+1];
+		int ri = 0;
+		
+		Deque<Integer> q = new ArrayDeque<>();
+		for (int i = 0; i < a.length; i++) {
+			
+			while (!q.isEmpty() && q.peek() < i - k + 1) {
+				q.poll();
+			}
+			
+			while (!q.isEmpty() && a[q.peekLast()] < a[i]) {
+				q.pollLast();
+			}
+			
+			q.offer(i);
+			if (i >= k - 1) {
+				r[ri++] = a[q.peek()];
+			}
+		}
+		return r;
+	}
+
+
+
+
+
+
+
+
+QUESTION 8
+
+
+
+class Solution {
+   
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        
+        int start = 0;
+        int end = arr.length - 1;
+     
+        while (end - start >= k) {
+      
+            if (Math.abs(arr[start] - x) > Math.abs(arr[end] - x)) {
+                start++;
+            } else {
+                end--;
+            }
+        }
+
+     
+        List<Integer> result = new ArrayList<>(k);
+        for (int i = start; i <= end; i++) {
+            result.add(arr[i]);
+        }
+        return result;
+    }
+}
