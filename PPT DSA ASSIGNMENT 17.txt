@@ -1,0 +1,270 @@
+QUESTION 1
+
+
+
+class CountIndex {
+	int count, index;
+
+	// constructor for first occurrence
+	public CountIndex(int index)
+	{
+		this.count = 1;
+		this.index = index;
+	}
+
+	public void incCount() { this.count++; }
+}
+class FirstNonRepeat {
+	static final int NO_OF_CHARS = 256;
+
+	static HashMap<Character, CountIndex> hm= new HashMap<Character, CountIndex>(NO_OF_CHARS);
+
+	static void getCharCountArray(String str)
+	{
+		for (int i = 0; i < str.length(); i++) {
+			// If character already occurred,
+			if (hm.containsKey(str.charAt(i))) {
+				// updating count
+				hm.get(str.charAt(i)).incCount();
+			}
+
+			
+			else {
+				hm.put(str.charAt(i), new CountIndex(i));
+			}
+		}
+	}
+
+	static int firstNonRepeating(String str)
+	{
+		getCharCountArray(str);
+		int result = Integer.MAX_VALUE, i;
+		for (Map.Entry<Character, CountIndex> entry :hm.entrySet()) {
+			int c = entry.getValue().count;
+			int ind = entry.getValue().index;
+			if (c == 1 && ind < result) {
+				result = ind;
+			}
+		}
+
+		return result;
+	}
+
+	
+}
+
+
+
+
+
+
+
+
+QUESTION 2
+
+
+
+class Solution {
+    public int maxSubarraySumCircular(int[] nums) {
+        final int n = nums.length;
+        final int[] rightMax = new int[n];
+        rightMax[n - 1] = nums[n - 1];
+        int suffixSum = nums[n - 1];
+
+        for (int i = n - 2; i >= 0; --i) {
+            suffixSum += nums[i];
+            rightMax[i] = Math.max(rightMax[i + 1], suffixSum);
+        }
+
+        int maxSum = nums[0];
+        int specialSum = nums[0];
+        int curMax = 0;
+        for (int i = 0, prefixSum = 0; i < n; ++i) {
+            // This is Kadane's algorithm.
+            curMax = Math.max(curMax, 0) + nums[i];
+            maxSum = Math.max(maxSum, curMax);
+
+            prefixSum += nums[i];
+            if (i + 1 < n) {
+                specialSum = Math.max(specialSum, prefixSum + rightMax[i + 1]);
+            }
+        }
+
+        return Math.max(maxSum, specialSum);  
+    }
+}
+
+
+
+
+
+QUESTION 3
+
+
+
+public int countStudents(int[] students, int[] sandwiches) {
+        int[] a = {0, 0};
+        for (int i=0;i<students.length;i++)
+            a[students[i]]+=1;
+        int k = 0;
+        while (k < sandwiches.length){
+            if (a[sandwiches[k]] > 0)
+                a[sandwiches[k]]-=1;
+            else
+                break;
+            k+=1;}
+        return sandwiches.length-k;
+    }
+
+
+
+
+
+
+
+
+QUESTION 4
+
+
+
+class RecentCounter {
+    LinkedList<Integer> slideWindow;
+
+    public RecentCounter() {
+        this.slideWindow = new LinkedList<Integer>();
+    }
+
+    public int ping(int t) {
+      
+        this.slideWindow.addLast(t);
+
+     
+        while (this.slideWindow.getFirst() < t - 3000)
+            this.slideWindow.removeFirst();
+
+        return this.slideWindow.size();
+    }
+}
+
+
+
+
+
+
+
+
+QUESTION 5
+
+
+class Solution {
+    public int findTheWinner(int n, int k) {
+        if (n == 1) {
+            return 1;
+        }
+        int ans = (findTheWinner(n - 1, k) + k) % n;
+        return ans == 0 ? n : ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+QUESTION 6
+
+
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        int n = deck.length;
+        Queue<Integer> index = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            index.add(i);
+        }
+
+        Arrays.sort(deck);
+        int[] rst = new int[n];
+        for (int card : deck) {
+            // assign one value to the rst each time
+            rst[index.poll()] = card;
+            // do the simulation (remove the next value to the queue's end)
+            if (!index.isEmpty()) {
+                index.add(index.poll());
+            }
+        }
+        return rst;
+    }
+}
+
+
+
+
+
+
+
+
+QUESTION 7
+
+
+
+class FrontMiddleBackQueue {
+
+    List<Integer> qList;
+
+    public FrontMiddleBackQueue() {
+        qList = new ArrayList<>();
+    }
+
+    public void pushFront(int val) {
+        qList.add(0, val);
+    }
+
+    public void pushMiddle(int val) {
+        int mid = qList.size()/2;
+        qList.add(mid, val);
+    }
+
+    public void pushBack(int val) {
+        qList.add(qList.size(), val);
+    }
+
+    public int popFront() {
+        return qList.isEmpty()? -1 : qList.remove(0);
+    }
+
+    public int popMiddle() {
+        return qList.isEmpty()? -1 : qList.remove((qList.size()-1)/2);
+    }
+
+    public int popBack() {
+        return qList.isEmpty()? -1 : qList.remove(qList.size()-1);
+    }
+}
+
+
+
+
+
+
+
+QUESTION 8
+
+
+class DataStream {
+    private int val, k, count;
+    public DataStream(int value, int k) {
+        this.val = value;
+        this.k = k;
+        this.count = 0;
+    }
+
+    public boolean consec(int num) {
+        // if num == val, increment the streak else set it to 0
+        count = (num == val)? count + 1 : 0;
+        return count >= k;
+        
+    }
+}

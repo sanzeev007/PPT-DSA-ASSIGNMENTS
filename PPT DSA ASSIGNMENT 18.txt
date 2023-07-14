@@ -1,0 +1,335 @@
+QUESTION 1
+
+
+class Solution {
+
+    public int[][] merge(int[][] intervals) {
+        // array[i] will point to the largest interval containing i
+        int[][] array = new int[10001][];
+
+        // This will go down by 1 whenever we merge intervals.
+        int numIntervals = intervals.length;
+
+        for (int[] interval : intervals) {
+            int[] lastMerged = null;
+            for (int i = interval[0]; i <= interval[1]; i++) {
+                // Check if this i is part of a prior interval.
+                if (array[i] != null) {
+                    // If so, we need to merge intervals.
+                    if (lastMerged != array[i]) {
+                        numIntervals--;
+                        lastMerged = array[i];
+    
+                        // Check if the prior interval started before this one.
+                        if (array[i][0] < i) {
+                            // If so, update those pointers to this new interval.
+                            for (int j = array[i][0]; j < interval[0]; j++) {
+                                array[j] = interval;
+                            }
+                            // Update this interval's lower bound.
+                            interval[0] = array[i][0];
+                        }
+                        // Update this interval's higher bound if necessary.
+                        interval[1] = Math.max(interval[1], array[i][1]);
+                    }
+                }
+                // Indicate that i is in this (possibly updated) interval.
+                array[i] = interval;
+            }
+        }
+        
+        // Put the final intervals into an array to return.
+        int[][] results = new int[numIntervals][];
+        int[] lastInterval = null;
+        for (int i = 0, j = 0; j < numIntervals; i++) {
+            if (array[i] != null && array[i] != lastInterval) {
+                lastInterval = array[i];
+                results[j++] = lastInterval;
+            }
+        }
+
+        return results;
+    }
+}
+
+
+
+
+QUESTION 2
+
+
+
+
+class Solution {
+	
+	static void printArr(int arr[], int n)
+	{
+		for (int i = 0; i < n; i++)
+			System.out.print(arr[i] + " ");
+	}
+
+	// Function to sort the array of 0s, 1s and 2s
+	static void sortArr(int arr[], int n)
+	{
+		int i, cnt0 = 0, cnt1 = 0, cnt2 = 0;
+
+		for (i = 0; i < n; i++) {
+			switch (arr[i]) {
+			case 0:
+				cnt0++;
+				break;
+			case 1:
+				cnt1++;
+				break;
+			case 2:
+				cnt2++;
+				break;
+			}
+		}
+
+		i = 0;
+
+		while (cnt0 > 0) {
+			arr[i++] = 0;
+			cnt0--;
+		}
+
+		// Then all the 1s
+		while (cnt1 > 0) {
+			arr[i++] = 1;
+			cnt1--;
+		}
+
+		// Finally all the 2s
+		while (cnt2 > 0) {
+			arr[i++] = 2;
+			cnt2--;
+		}
+
+		// Print the sorted array
+		printArr(arr, n);
+	}
+
+	public static void main(String[] args)
+	{
+		int arr[] = { 0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1 };
+		int n = arr.length;
+		sortArr(arr, n);
+	}
+}
+
+
+
+QUESTION 3
+
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+
+        int start = 1; 
+        int end = n;
+        int mid = 0;
+        
+        while (start <= end) {
+            mid = start + (end - start) / 2; 
+
+            if (isBadVersion(mid)) {
+                end = mid - 1; 
+            } else {
+          
+                start = mid + 1; 
+            }
+        }
+
+        return end + 1; 
+    }
+}
+
+
+
+QUESTION 4
+
+
+
+class Solution {
+	public int maximumGap(int[] nums) {
+	   int n = nums.length;
+
+	   if(n < 2)
+			return 0;
+
+		int min = Integer.MAX_VALUE;
+		int max = -1;
+
+		for(int num : nums){
+			min = Math.min(min, num);
+			max = Math.max(max, num);
+		}
+
+		int interval = (int)(Math.ceil((max - min + 0.0) / (n - 1)));
+		if(interval == 0)//all are equal
+			return 0;
+
+		int[] bucketMin = new int[n];
+		int[] bucketMax = new int[n];
+		
+		Arrays.fill(bucketMin, Integer.MAX_VALUE);
+		Arrays.fill(bucketMax, Integer.MIN_VALUE);
+		
+		for(int num : nums){
+			int index = (num - min) / interval;
+
+			bucketMin[index] = Math.min(bucketMin[index], num);
+			bucketMax[index] = Math.max(bucketMax[index], num);
+		}
+
+		
+		int prev = min;
+		int maxGap = 0;
+
+		for(int i = 0; i < n; i++){
+			if(bucketMin[i] == Integer.MAX_VALUE)
+				continue;
+
+			int gap = bucketMin[i] - prev;
+			maxGap = Math.max(maxGap, gap);
+
+			prev = bucketMax[i];
+		}
+
+		return maxGap;
+	}
+}
+
+
+
+QUESTION 5
+
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                return true;
+            }
+            map.put(nums[i],1);
+        }
+        return false;
+    }
+}
+
+
+QUESTION 6
+
+
+
+
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+       
+        int result = 0;
+
+      
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((a,b) -> a[1]-b[1]);
+
+   
+        for (int []point : points) priorityQueue.add(point);
+
+        if (priorityQueue.isEmpty()) return 0;
+
+       
+        while (!priorityQueue.isEmpty()) {
+           
+            int [] prev = priorityQueue.poll();
+
+            while (!priorityQueue.isEmpty() && prev[1]>=priorityQueue.peek()[0] && prev[1]<=priorityQueue.peek()[1]) 
+{
+                priorityQueue.poll();
+            }
+
+      
+            result++;
+        }
+
+        return result;
+    }
+}
+
+
+
+QUESTION 7
+
+
+public class Solution {
+    public int lengthOfLIS(int[] nums) {            
+        int[] dp = new int[nums.length];
+        int len = 0;
+
+        for(int x : nums) {
+            int i = Arrays.binarySearch(dp, 0, len, x);
+            if(i < 0) i = -(i + 1);
+            dp[i] = x;
+            if(i == len) len++;
+        }
+
+        return len;
+    }
+}
+
+
+QUESTION 8
+
+
+
+class Solution {
+
+	static boolean recreationalSpot(int[] arr, int n)
+	{
+		List<Integer> small = new ArrayList<>();
+		
+		int min1 = arr[0];
+		for (int i = 0; i < n; i++) {
+			if (min1 >= arr[i]) {
+				min1 = arr[i];
+
+				small.add(-1);
+			}
+			else {
+				
+				small.add(min1);
+			}
+		}
+	
+		Stack<Integer> s = new Stack<>();
+
+		
+		for (int i = n - 1; i > 0; i--) {
+			
+			while (!s.isEmpty()&& s.peek() <= small.get(i)) {
+				s.pop();
+			}
+			
+			if (!s.isEmpty() && small.get(i) != -1&& s.peek() < arr[i]) {
+				return true;
+			}
+			s.push(arr[i]);
+		}
+		return false;
+	}
+
+	public static void main(String[] args)
+	{
+		int[] arr = { 4, 7, 11, 5, 13, 2 };
+		int N = arr.length;
+
+		
+		if (recreationalSpot(arr, N)) {
+			System.out.print("True");
+		}
+		else {
+			System.out.print("False");
+		}
+	}
+}
+

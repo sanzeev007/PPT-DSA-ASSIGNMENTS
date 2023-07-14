@@ -1,0 +1,344 @@
+QUESTION 1
+
+
+
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+	int[] ans = new int[nums1.length];
+
+	Stack<Integer> stack = new Stack<>();
+	HashMap<Integer, Integer> map = new HashMap<>();
+
+	// find out all the next greater elements in nums2 array
+	for(int num: nums2) {
+		// if num is greater than top elements in stack then it is the next greater element in nums2
+		while(!stack.isEmpty() && num > stack.peek()) {
+			map.put(stack.pop(), num);
+		}
+		// then add num to stack
+		stack.add(num);
+	}
+
+	int i = 0;
+	for(int num : nums1) {
+		ans[i++] = map.getOrDefault(num, -1);
+	}
+
+	return ans;
+}
+
+
+
+
+
+QUESTION 2
+
+
+
+class Solution {
+
+// Prints smaller elements on left side of every element
+	static void printPrevSmaller(int arr[], int n) {
+		
+		Stack<Integer> S = new Stack<>();
+
+		for (int i = 0; i < n; i++) {
+			
+			while (!S.empty() && S.peek() >= arr[i]) {
+				S.pop();
+			}
+
+			if (S.empty()) {
+				System.out.print("_, ");
+			} else //Else print the nearest smaller element
+			{
+				System.out.print(S.peek() + ", ");
+			}
+
+			S.push(arr[i]);
+		}
+	}
+
+}
+
+
+
+
+
+
+QUESTION 3
+
+
+
+public void push(int x) {
+    q2.add(x);
+    top = x;
+    while (!q1.isEmpty()) {                
+        q2.add(q1.remove());
+    }
+    Queue<Integer> temp = q1;
+    q1 = q2;
+    q2 = temp;
+}
+
+
+
+
+
+
+
+
+QUESTION 4
+
+
+
+
+class Solution {
+ 
+   
+    static Stack<Character> st = new Stack<>();
+ 
+    static void insert_at_bottom(char x)
+    {
+ 
+        if (st.isEmpty())
+            st.push(x);
+ 
+        else {
+ 
+            char a = st.peek();
+            st.pop();
+            insert_at_bottom(x);
+ 
+            st.push(a);
+        }
+    }
+ 
+    static void reverse()
+    {
+        if (st.size() > 0) {
+ 
+            char x = st.peek();
+            st.pop();
+            reverse();
+ 
+            insert_at_bottom(x);
+        }
+    }
+ 
+
+
+
+
+
+
+QUESTION 5
+
+
+
+
+class Stack {
+	int size;
+	int top;
+	char[] a;
+
+	boolean isEmpty() { return (top < 0); }
+
+	Stack(int n)
+	{
+		top = -1;
+		size = n;
+		a = new char[size];
+	}
+
+	boolean push(char x)
+	{
+		if (top >= size) {
+			System.out.println("Stack Overflow");
+			return false;
+		}
+		else {
+			a[++top] = x;
+			return true;
+		}
+	}
+
+	char pop()
+	{
+		if (top < 0) {
+			System.out.println("Stack Underflow");
+			return 0;
+		}
+		else {
+			char x = a[top--];
+			return x;
+		}
+	}
+}
+
+class Main {
+	
+	public static void reverse(StringBuffer str)
+	{
+		int n = str.length();
+		Stack obj = new Stack(n);
+
+		
+		int i;
+		for (i = 0; i < n; i++)
+			obj.push(str.charAt(i));
+
+		
+		for (i = 0; i < n; i++) {
+			char ch = obj.pop();
+			str.setCharAt(i, ch);
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+QUESTION 6
+
+
+class Solution {
+	
+	// Method to evaluate value of a postfix expression
+	static int evaluatePostfix(String exp)
+	{
+		
+		Stack<Integer> stack = new Stack<>();
+
+		
+		for (int i = 0; i < exp.length(); i++) {
+			char c = exp.charAt(i);
+
+			if (c == ' ')
+				continue;
+
+			else if (Character.isDigit(c)) {
+				int n = 0;
+
+				
+				while (Character.isDigit(c)) {
+					n = n * 10 + (int)(c - '0');
+					i++;
+					c = exp.charAt(i);
+				}
+				i--;
+
+				// Push the number in stack
+				stack.push(n);
+			}
+
+			else {
+				int val1 = stack.pop();
+				int val2 = stack.pop();
+
+				switch (c) {
+				case '+':
+					stack.push(val2 + val1);
+					break;
+				case '-':
+					stack.push(val2 - val1);
+					break;
+				case '/':
+					stack.push(val2 / val1);
+					break;
+				case '*':
+					stack.push(val2 * val1);
+					break;
+				}
+			}
+		}
+		return stack.pop();
+	}
+
+}
+
+
+
+
+
+
+QUESTION 7
+
+
+class MinStack {
+    private Stack<Pair<Integer, Integer>> stack;
+
+    public MinStack() {
+        stack = new Stack<>();
+    }
+
+    public void push(int val) {
+        if (stack.isEmpty()) {
+            stack.push(new Pair<>(val, val));
+        } else {
+            int min = Math.min(stack.peek().getValue(), val);
+            stack.push(new Pair<>(val, min));
+        }
+    }
+
+    public void pop() {
+        if (!stack.isEmpty()) {
+            stack.pop();
+        }
+    }
+
+    public int top() {
+        if (stack.isEmpty()) {
+            return 0;
+        }
+        return stack.peek().getKey();
+    }
+
+    public int getMin() {
+        if (stack.isEmpty()) {
+            return 0;
+        }
+        return stack.peek().getValue();
+    }
+}
+
+
+
+
+
+
+
+QUESTION 8
+
+
+
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length - 1;
+        int leftMax = height[0], rightMax = height[height.length - 1];
+        int water = 0;
+        while (left < right) {
+            if (leftMax < rightMax) {
+                left++;
+                if (leftMax < height[left]) {
+                    leftMax = height[left];
+                } else {
+                    water += leftMax - height[left];
+                }
+            } else {
+                right--;
+                if (rightMax < height[right]) {
+                    rightMax = height[right];
+                } else {
+                    water += rightMax - height[right];
+                }
+            }
+        }
+        return water;
+    }
+}
+

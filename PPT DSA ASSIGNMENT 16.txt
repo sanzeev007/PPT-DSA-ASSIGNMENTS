@@ -1,0 +1,388 @@
+QUESTION 1
+
+
+
+
+class Solution {
+
+	
+	static void NFG(int a[], int n, int freq[])
+	{
+
+		
+		Stack<Integer> s = new Stack<Integer>();
+		s.push(0);
+
+		int res[] = new int[n];
+		for (int i = 0; i < n; i++)
+			res[i] = 0;
+
+		for (int i = 1; i < n; i++)
+		{
+			
+
+			if (freq[a[s.peek()]] > freq[a[i]])
+				s.push(i);
+			else
+			{
+
+				while (freq[a[s.peek()]] < freq[a[i]]
+					&& s.size() > 0)
+				{
+					res[s.peek()] = a[i];
+					s.pop();
+				}
+
+				s.push(i);
+			}
+		}
+
+		while (s.size() > 0)
+		{
+			res[s.peek()] = -1;
+			s.pop();
+		}
+
+		for (int i = 0; i < n; i++)
+		{
+			System.out.print(res[i] + " ");
+		}
+	}
+
+
+}
+
+
+
+
+QUESTION 2
+
+
+
+class SortStack
+{
+	// This function return the sorted stack
+	public static Stack<Integer> sortstack(Stack<Integer>input)
+	{
+		Stack<Integer> tmpStack = new Stack<Integer>();
+		while(!input.isEmpty())
+		{
+			
+			int tmp = input.pop();
+		
+			
+			while(!tmpStack.isEmpty() && tmpStack.peek()< tmp)
+			{
+			input.push(tmpStack.pop());
+			}
+			
+			tmpStack.push(tmp);
+		}
+		return tmpStack;
+	}
+	
+	}
+
+
+
+
+QUESTION 3
+
+
+
+public class Solution {
+
+	
+	static void deleteMid(Stack<Character> st,int n, int curr)
+	{
+		
+		if (st.empty() || curr == n)
+			return;
+		
+		char x = st.pop();
+		
+		deleteMid(st, n, curr+1);
+		
+		
+		if (curr != n/2)
+			st.push(x);
+	}
+	
+	public static void main(String args[])
+	{
+		Stack<Character> st =new Stack<Character>();
+	
+		st.push('1');
+		st.push('2');
+		st.push('3');
+		st.push('4');
+		st.push('5');
+		st.push('6');
+		st.push('7');
+	
+		deleteMid(st, st.size(), 0);
+	
+		while (!st.empty())
+		{
+			char p=st.pop();
+			System.out.print(p + " ");
+		}
+	}
+}
+
+
+QUESTION 4
+
+
+
+class Solution
+{
+	static Queue<Integer> q =new LinkedList<Integer>();
+	
+	static boolean checkSorted(int n)
+	{
+		Stack<Integer> st =new Stack<Integer>();
+		int expected = 1;
+		int fnt;
+	
+		while (q.size() != 0)
+		{
+			fnt = q.peek();
+			q.poll();
+	
+			if (fnt == expected)
+				expected++;
+	
+			else
+			{
+				if (st.size() == 0)
+				{
+					st.push(fnt);
+				}
+	
+				else if (st.size() != 0 &&
+						st.peek() < fnt)
+				{
+					return false;
+				}
+	
+				else
+					st.push(fnt);
+			}
+	
+			while (st.size() != 0 &&
+				st.peek() == expected)
+			{
+				st.pop();
+				expected++;
+			}
+		}
+	
+		if (expected - 1 == n &&
+				st.size() == 0)
+			return true;
+	
+		return false;
+	}
+	
+	public static void main(String args[])
+	{
+		q.add(5);
+		q.add(1);
+		q.add(2);
+		q.add(3);
+		q.add(4);
+	
+		int n = q.size();
+
+		if (checkSorted(n))
+			System.out.print("Yes");
+		else
+			System.out.print("No");
+	}
+}
+
+
+
+
+
+
+QUESTION 5
+
+
+
+
+public class Solution
+{
+	static Stack<Integer> st= new Stack<>();
+
+	static void push_digits(int number)
+	{
+		while(number != 0)
+		{
+			st.push(number % 10);
+			number = number / 10;
+		}
+	}
+
+	static int reverse_number(int number)
+	{
+		push_digits(number);
+		int reverse = 0;
+		int i = 1;
+
+		while (!st.isEmpty())
+		{
+			reverse = reverse + (st.peek() * i);
+			st.pop();
+			i = i * 10;
+		}
+
+		return reverse;
+	}
+
+	public static void main(String[] args)
+	{
+		int number = 39997;
+		System.out.println(reverse_number(number));
+	}
+}
+
+
+
+
+
+QUESTION 6
+
+
+
+public class ReverseFirstKQueue {
+ 
+    public static void reverseFirstK(Queue<Integer> q, int k){
+        Deque<Integer> d = new ArrayDeque<>();
+ 
+       
+        for (int i = 0; i < k; i++) {
+            d.push(q.poll());
+        }
+ 
+     
+        while (!d.isEmpty()) {
+            q.add(d.pop());
+        }
+ 
+     
+        for (int i = 0; i < q.size() - k; i++) {
+            q.add(q.poll());
+        }
+    }
+
+
+
+QUESTION 7
+
+
+class Test
+{
+    static int removeConsecutiveSame(Vector <String> v)
+    {
+        Stack<String> st = new Stack<>();
+     
+        for (int i=0; i<v.size(); i++)
+        {
+          
+            if (st.empty())
+                st.push(v.get(i));
+            else
+            {
+                String str = st.peek();
+      
+                if (str.equals(v.get(i)))   
+                    st.pop();
+     
+                else
+                    st.push(v.get(i));
+            }
+        }
+
+
+QUESTION 8
+
+
+
+
+
+class Solution
+{
+
+	static void leftSmaller(int arr[], int n, int SE[])
+	{
+		
+		Stack<Integer> S = new Stack<>();
+
+		for (int i = 0; i < n; i++)
+		{
+			while (!S.empty() && S.peek() >= arr[i])
+			{
+				S.pop();
+			}
+
+		
+			if (!S.empty())
+			{
+				SE[i] = S.peek();
+			}
+		
+			else
+			{
+				SE[i] = 0;
+			}
+
+			// Push this element
+			S.push(arr[i]);
+		}
+	}
+
+	static int findMaxDiff(int arr[], int n)
+	{
+		int[] LS = new int[n];
+		leftSmaller(arr, n, LS);
+
+		int[] RRS = new int[n]; 
+		
+		
+		reverse(arr);
+		leftSmaller(arr, n, RRS);
+
+		int result = -1;
+		for (int i = 0; i < n; i++)
+		{
+			result = Math.max(result, Math.abs(LS[i] - RRS[n - 1 - i]));
+		}
+
+		
+		return result;
+	}
+
+	static void reverse(int a[])
+	{
+		int i, k, n = a.length;
+		int t;
+		for (i = 0; i < n / 2; i++)
+		{
+			t = a[i];
+			a[i] = a[n - i - 1];
+			a[n - i - 1] = t;
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		int arr[] = {2, 4, 8, 7, 7, 9, 3};
+		int n = arr.length;
+		System.out.println("Maximum diff : "+ findMaxDiff(arr, n));
+	}
+}
+
+
+
