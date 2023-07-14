@@ -1,0 +1,364 @@
+QUESTION 1
+
+
+class LinkedList {
+
+	static Node head;
+
+	static class Node {
+
+		int data;
+		Node next;
+
+		Node(int d)
+		{
+			data = d;
+			next = null;
+		}
+	}
+
+	void detectAndRemoveLoop(Node node)
+	{
+
+		if (node == null || node.next == null)
+			return;
+
+		Node slow = node, fast = node;
+
+		slow = slow.next;
+		fast = fast.next.next;
+
+		while (fast != null && fast.next != null) {
+			if (slow == fast)
+				break;
+
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		if (slow == fast) {
+			slow = node;
+			if (slow != fast) {
+				while (slow.next != fast.next) {
+					slow = slow.next;
+					fast = fast.next;
+				}
+			
+			}
+			
+			else {
+				while(fast.next != slow) {
+					fast = fast.next;
+				}
+				fast.next = null;
+			}
+		}
+	}
+
+	void printList(Node node)
+	{
+		while (node != null) {
+			System.out.print(node.data + " ");
+			node = node.next;
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+QUESTION 2
+
+
+class Node {
+  int data;
+  Node next;
+ 
+  Node(int d) {
+    data = d;
+    next = null;
+  }
+}
+ 
+class AddLinkedList
+{
+
+  static Node push(Node head_ref, int new_data)
+  {
+     
+  
+   	 Node new_node = new Node(new_data);
+ 	new_node.next = head_ref;
+	head_ref = new_node;
+    return head_ref;
+  }
+ 
+  static void printList(Node n) {
+    while (n != null) {
+      System.out.print(n.data + " ");
+      n = n.next;
+    }
+    System.out.println();
+  }
+ 
+  static Node addTwoLists(Node first) {
+    int num1 = 0;
+  
+    while (first.next != null) {
+      num1 += first.data;
+      num1 *= 10;
+      first = first.next;
+    }
+    num1 += first.data;
+ 
+    int num2 = num1 + 1;
+    Node temp = null;
+     
+ 
+    while (num2 != 0) {
+      int last = num2 % 10;
+      temp = push(temp, last);
+      num2 = num2 / 10;
+    }
+
+    return temp;
+  }
+ 
+
+
+
+
+QUESTION 3
+
+
+class Node {
+    int data;
+    Node next;
+    Node bottom;
+    Node(int data)
+    {
+        this.data = data;
+        next = null;
+        bottom = null;
+    }
+}
+
+class NodeComparator implements java.util.Comparator<Node> {
+    @Override public int compare(Node a, Node b)
+    {
+        return a.data - b.data;
+    }
+}
+ 
+public class Main {
+  
+    public static void flatten(Node root)
+    {
+ 
+        PriorityQueue<Node> pq= new PriorityQueue<Node>(new NodeComparator());
+ 
+        while (root != null) {
+            pq.add(root);
+            root = root.next;
+        }
+ 
+        while (!pq.isEmpty()) {
+   
+            Node k = pq.poll();
+ 
+            System.out.print(k.data + " ");
+            if (k.bottom != null) {
+                pq.add(k.bottom);
+            }
+        }
+    }
+ 
+
+
+QUESTION 4
+
+
+public RandomListNode copyRandomList(RandomListNode head) {
+  RandomListNode iter = head, next;
+
+  while (iter != null) {
+    next = iter.next;
+
+    RandomListNode copy = new RandomListNode(iter.label);
+    iter.next = copy;
+    copy.next = next;
+
+    iter = next;
+  }
+
+ 
+  iter = head;
+  while (iter != null) {
+    if (iter.random != null) {
+      iter.next.random = iter.random.next;
+    }
+    iter = iter.next.next;
+  }
+
+ 
+  iter = head;
+  RandomListNode pseudoHead = new RandomListNode(0);
+  RandomListNode copy, copyIter = pseudoHead;
+
+  while (iter != null) {
+    next = iter.next.next;
+
+   
+    copy = iter.next;
+    copyIter.next = copy;
+    copyIter = copy;
+
+    iter.next = next;
+
+    iter = next;
+  }
+
+  return pseudoHead.next;
+}
+
+
+
+
+
+
+
+QUESTION 5
+
+
+public class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null) return null;
+        ListNode odd = head, even = head.next, evenHead = even;
+        while (even != null && even.next != null) {
+            odd.next = even.next;
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+        odd.next = evenHead;
+        return head;
+    }
+}
+
+
+
+
+
+
+
+QUESTION 6
+
+
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if( k == 0 || head ==null || head.next == null) return head;
+
+        int len=1;
+        ListNode cur=head;
+   
+        while(cur.next != null){
+            len++;
+            cur=cur.next;
+        }
+    
+        k = len - (k%len);
+     
+        cur.next = head;
+
+        while(k > 0){
+            cur=cur.next;
+            k--;
+        } 
+      
+        head = cur.next;
+        cur.next = null;
+
+        return head;
+
+    }
+}
+
+
+
+
+QUESTION 7
+
+
+class Solution {
+    public int[] nextLargerNodes(ListNode head) {
+        int n = size(head);
+        int arr[] = new int[n];
+        ListNode curr = head;
+        int i=0;
+        while(curr!=null)
+        {
+            ListNode temp = curr.next;
+            while(temp!=null)
+            {
+                if(temp.val>curr.val)
+                    break;
+                temp = temp.next;
+            }
+            if(temp==null)
+                arr[i++]=0;
+            else
+                arr[i++]=temp.val;
+            curr = curr.next;
+        }
+        return arr;
+    }
+    public int size(ListNode temp)
+    {
+        int n = 0;
+        while(temp!=null){
+            temp = temp.next;
+            n++;
+        }
+        return n;
+    }
+}
+
+
+
+
+QUESTION 8
+
+
+
+class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        Map<Integer,ListNode> map = new HashMap<Integer,ListNode>();
+        ListNode dummy = new ListNode(0),p;
+        dummy.next = head;
+        p = dummy;
+        int sum = 0;
+        while(p!=null){
+            sum+=p.val;
+            map.put(sum,p);
+            p = p.next;
+        }
+        sum = 0;
+        p = dummy;
+        while(p!=null){
+            sum+=p.val;
+            if(map.containsKey(sum)){
+                ListNode tmp = map.get(sum);
+                if(tmp!=p){
+                    p.next = tmp.next;
+                }
+            }
+            p = p.next;
+        }
+        return dummy.next;
+    }
+}
