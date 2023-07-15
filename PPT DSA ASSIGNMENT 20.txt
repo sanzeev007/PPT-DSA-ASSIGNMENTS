@@ -1,0 +1,198 @@
+QUESTION 1
+
+
+class Solution
+{
+
+static class Node
+{
+	int key;
+	Node left, right;
+}
+
+static class INT
+{
+	int v;
+	INT(int a)
+	{
+		v = a;
+	}
+}
+
+static Node newNode(int key)
+{
+	Node temp = new Node();
+	temp.key = key;
+	temp.left = temp.right = null;
+	return temp;
+}
+
+static int findLargestSubtreeSumUtil(Node root,INT ans)
+{
+	if (root == null)	
+		return 0;
+	
+	int currSum = root.key +
+	findLargestSubtreeSumUtil(root.left, ans) +
+	findLargestSubtreeSumUtil(root.right, ans);
+
+	ans.v = Math.max(ans.v, currSum);
+
+	return currSum;
+}
+
+static int findLargestSubtreeSum(Node root)
+{
+	if (root == null)	
+		return 0;
+
+	INT ans = new INT(-9999999);
+
+	findLargestSubtreeSumUtil(root, ans);
+
+	return ans.v;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 2
+
+
+
+
+class Solution {
+
+	static class Node {
+		int data;
+		Node left, right;
+	};
+
+	static Node getNode(int data)
+	{
+		Node newNode = new Node();
+
+		newNode.data = data;
+		newNode.left = newNode.right = null;
+		return newNode;
+	}
+
+	static Node LevelOrder(Node root, int data)
+	{
+		if (root == null) {
+			root = getNode(data);
+			return root;
+		}
+		if (data <= root.data)
+			root.left = LevelOrder(root.left, data);
+		else
+			root.right = LevelOrder(root.right, data);
+		return root;
+	}
+
+	static Node constructBst(int arr[], int n)
+	{
+		if (n == 0)
+			return null;
+		Node root = null;
+
+		for (int i = 0; i < n; i++)
+			root = LevelOrder(root, arr[i]);
+
+		return root;
+	}
+
+	static void inorderTraversal(Node root)
+	{
+		if (root == null)
+			return;
+
+		inorderTraversal(root.left);
+		System.out.print(root.data + " ");
+		inorderTraversal(root.right);
+	}
+
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 3
+
+
+
+
+public class Solution
+{
+
+static class NodeDetails
+{
+	int data;
+	int min, max;
+};
+
+static boolean levelOrderIsOfBST(int arr[], int n)
+{
+	if (n == 0)
+		return true;
+	
+	
+	Queue<NodeDetails> q = new LinkedList<NodeDetails>();
+	
+	int i = 0;
+	
+	NodeDetails newNode=new NodeDetails();
+	newNode.data = arr[i++];
+	newNode.min = Integer.MIN_VALUE;
+	newNode.max = Integer.MAX_VALUE;
+	q.add(newNode);
+	
+	while (i != n && q.size() > 0)	
+	{
+		
+		NodeDetails temp = q.peek();
+		q.remove();
+		newNode = new NodeDetails();
+		
+		if (i < n && (arr[i] < (int)temp.data &&arr[i] > (int)temp.min))
+		{
+			newNode.data = arr[i++];
+			newNode.min = temp.min;
+			newNode.max = temp.data;
+			q.add(newNode);			
+		}
+		
+		newNode=new NodeDetails();
+		
+		if (i < n && (arr[i] > (int)temp.data &&arr[i] < (int)temp.max))
+		{
+			newNode.data = arr[i++];
+			newNode.min = temp.data;
+			newNode.max = temp.max;
+			q.add(newNode);		
+		}	
+	}
+	
+	if (i == n)
+		return true;
+	return false;	
+}
+}
+
+

@@ -1,0 +1,271 @@
+QUESTION 1
+
+
+
+class Node
+{
+	int data;
+	Node left, right;
+
+	public Node(int data)
+	{
+		this.data = data;
+		left = right = null;
+	}
+}
+
+class BinaryTree
+{
+	Node root;
+	Node head;
+	static Node prev = null;
+
+	void BinaryTree2DoubleLinkedList(Node root)
+	{
+		
+		if (root == null)
+			return;
+
+		
+		BinaryTree2DoubleLinkedList(root.left);
+
+		
+		if (prev == null)
+			head = root;
+		else
+		{
+			root.left = prev;
+			prev.right = root;
+		}
+		prev = root;
+
+		
+		BinaryTree2DoubleLinkedList(root.right);
+	}
+
+	
+	void printList(Node node)
+	{
+		while (node != null)
+		{
+			System.out.print(node.data + " ");
+			node = node.right;
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+QUESTION 2
+
+
+
+
+
+
+class Solution {
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        if (root1 == root2)
+            return true;
+        if (root1 == null || root2 == null || root1.val != root2.val)
+            return false;
+
+        return (flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right) ||
+                flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left));
+    }
+}
+
+
+
+
+
+
+QUESTION 3
+
+
+
+
+
+public class PrintPath {
+
+	public static void printTopToBottomPath(Node curr, HashMap<Node,Node> parent)
+	{
+		Stack<Node> stk=new Stack<>() ;
+
+		while (curr!=null)
+		{
+			stk.push(curr);
+			curr = parent.get(curr);
+		}
+
+		while (!stk.isEmpty())
+		{
+			curr = stk.pop();
+			System.out.print(curr.data+" ");
+		}
+		System.out.println();
+	}
+
+	public static void printRootToLeaf(Node root)
+	{
+		if (root == null)
+			return;
+
+		
+		Stack<Node> nodeStack=new Stack<>();
+		nodeStack.push(root);
+
+		HashMap<Node,Node> parent=new HashMap<>();
+
+		parent.put(root,null);
+
+		while (!nodeStack.isEmpty())
+		{
+			
+			Node current = nodeStack.pop();
+
+			if (current.left==null && current.right==null)
+				printTopToBottomPath(current, parent);
+
+			if (current.right!=null)
+			{
+				parent.put(current.right,current);
+				nodeStack.push(current.right);
+			}
+			if (current.left!=null)
+			{
+				parent.put(current.left,current);
+				nodeStack.push(current.left);
+			}
+		}
+	}
+
+
+	public static void main(String args[]) {
+		Node root=new Node(10);
+		root.left = new Node(8);
+		root.right = new Node(2);
+		root.left.left = new Node(3);
+		root.left.right = new Node(5);
+		root.right.left = new Node(2);
+		printRootToLeaf(root);
+	}
+}
+
+class Node
+{
+	int data;
+	Node left, right;
+	Node(int data)
+	{
+		left=right=null;
+		this.data=data;
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 4
+
+
+
+
+class Solution {
+	static int preIndex = 0;
+
+static class Node
+{
+	int data;
+	Node left, right;
+}
+
+static Node newNode(int data)
+{
+	Node temp = new Node();
+	temp.data = data;
+	temp.left = null;
+	temp.right = null;
+	return temp;
+}
+
+static int search(int arr[], int strt, int end, int value)
+{
+	for (int i = strt; i <= end; i++)
+	{
+		if(arr[i] == value)
+			return i;
+	}
+	return -1;
+}
+
+static Node buildTree(int in[], int pre[], int inStrt, int inEnd)
+{
+
+	if(inStrt > inEnd)
+		return null;
+
+	Node tNode = newNode(pre[preIndex++]);
+
+	
+	if (inStrt == inEnd)
+		return tNode;
+
+	int inIndex = search(in, inStrt, inEnd, tNode.data);
+
+	tNode.left = buildTree(in, pre, inStrt, inIndex-1);
+	tNode.right = buildTree(in, pre, inIndex+1, inEnd);
+
+	return tNode;
+}
+
+static int checkPostorder(Node node, int postOrder[], int index)
+{
+	if (node == null)
+		return index;
+
+	
+	index = checkPostorder(node.left,postOrder,index);
+	
+	index = checkPostorder(node.right,postOrder,index);	
+	if (node.data == postOrder[index])
+		index++;
+	else
+		return -1;
+
+	return index;
+}
+
+
+public static void main(String[] args)
+{
+	int inOrder[] = {4, 2, 5, 1, 3};
+	int preOrder[] = {1, 2, 4, 5, 3};
+	int postOrder[] = {4, 5, 2, 3, 1};
+
+	int len = inOrder.length;
+
+	
+	Node root = buildTree(inOrder, preOrder, 0, len - 1);
+	int index = checkPostorder(root,postOrder,0);
+	if (index == len)
+	System.out.println("Yes");
+	else
+	System.out.println("No");
+
+}
+}
+
